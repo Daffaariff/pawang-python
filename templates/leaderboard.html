@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="leaderboard-container">
+    <div class="leaderboard-header">
+        <h2>🏆 Pawang Leaderboard</h2>
+        <p class="leaderboard-subtitle">See how you rank among Python Learners! 🐍</p>
+    </div>
+
+    {% if leaderboard %}
+    <div class="leaderboard-stats">
+        <div class="stat-item">
+            <span class="stat-value">{{ leaderboard|length }}</span>
+            <span class="stat-label">Total Players</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-value">{{ leaderboard[0].score if leaderboard else 0 }}</span>
+            <span class="stat-label">Top Score</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-value">
+                {% if leaderboard|length >= 3 %}
+                    {{ leaderboard[2].score }}
+                {% else %}
+                    {{ leaderboard[-1].score if leaderboard else 0 }}
+                {% endif %}
+            </span>
+            <span class="stat-label">3rd Place</span>
+        </div>
+    </div>
+
+    <table class="leaderboard-table">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Coder</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in leaderboard %}
+            <tr {% if current_user and row.nickname == current_user.nickname %}class="current-user"{% endif %}>
+                <td>{{ loop.index }}</td>
+                <td>{{ row["nickname"] }}</td>
+                <td>{{ row["score"] }} pts</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="leaderboard-empty">
+        <h3>No scores yet! 🎯</h3>
+        <p>Be the first to complete the quiz and claim the top spot!</p>
+        <a href="{{ url_for('quiz.quiz_page') }}" class="cta-btn" style="margin-top: 20px; display: inline-block;">
+            Take the Quiz 🚀
+        </a>
+    </div>
+    {% endif %}
+
+    <a href="{{ url_for('home') }}" class="back-link">
+        ← Back to Home
+    </a>
+</div>
+
+<script>
+// Add some interactive effects
+document.addEventListener('DOMContentLoaded', function() {
+    const rows = document.querySelectorAll('.leaderboard-table tbody tr');
+
+    rows.forEach((row, index) => {
+        // Add click effect
+        row.addEventListener('click', function() {
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        });
+
+        // Add staggered animation
+        row.style.animationDelay = `${(index + 1) * 0.1}s`;
+    });
+});
+</script>
+{% endblock %}

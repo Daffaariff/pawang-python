@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-container">
+  <h2>🚀 Join <span>PawangPython</span></h2>
+  <p class="auth-subtitle">Create your account and start your coding journey! 🌟</p>
+
+  <form method="POST" action="{{ url_for('auth.register') }}" class="registration-form">
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" name="username" placeholder="Choose a username" required>
+      <div class="form-instructions">This will be your unique identifier</div>
+    </div>
+
+    <div class="form-group">
+      <label>Nickname</label>
+      <input type="text" name="nickname" placeholder="What should we call you?" required>
+      <div class="form-instructions">This will be displayed on your profile</div>
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" name="password" placeholder="Create a strong password" required>
+      <div class="password-strength">
+        <div class="strength-bar" id="password-strength-bar"></div>
+      </div>
+      <div class="form-instructions">Use at least 8 characters with mix of letters, numbers & symbols</div>
+    </div>
+
+    <div class="form-group">
+      <label>City</label>
+      <div class="city-input-wrapper">
+        <input type="text" name="city" placeholder="Enter your city for weather updates" required>
+      </div>
+      <div class="form-instructions">We'll use this to show your local weather</div>
+    </div>
+
+    <button type="submit" class="register-btn">Create Account</button>
+
+    <p class="auth-footer">
+      Already have an account?
+      <a href="{{ url_for('auth.login') }}">Login here</a>
+    </p>
+  </form>
+</div>
+
+<script>
+// Simple password strength indicator
+document.querySelector('input[name="password"]').addEventListener('input', function(e) {
+    const password = e.target.value;
+    const strengthBar = document.getElementById('password-strength-bar');
+
+    // Reset classes
+    strengthBar.className = 'strength-bar';
+
+    if (password.length === 0) {
+        strengthBar.style.width = '0%';
+        return;
+    }
+
+    let strength = 0;
+
+    // Length check
+    if (password.length >= 8) strength += 1;
+
+    // Character variety checks
+    if (/[a-z]/.test(password)) strength += 1;
+    if (/[A-Z]/.test(password)) strength += 1;
+    if (/[0-9]/.test(password)) strength += 1;
+    if (/[^a-zA-Z0-9]/.test(password)) strength += 1;
+
+    // Update strength bar
+    if (strength <= 2) {
+        strengthBar.classList.add('strength-weak');
+    } else if (strength <= 4) {
+        strengthBar.classList.add('strength-medium');
+    } else {
+        strengthBar.classList.add('strength-strong');
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Pro Quiz</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <nav>
+    <a class="logo" href="{{ url_for('home') }}">🧠 PawangPython</a>
+    <div>
+      {% if session.get('user_id') %}
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('quiz.quiz_home') }}">Quiz</a>
+        <a href="{{ url_for('quiz.leaderboard') }}">Leaderboard</a>
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}">Login</a>
+        <a href="{{ url_for('auth.register') }}">Register</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <p>© 2025 <strong>Pawang Python!</strong> — Developed by <a href="https://github.com/daffaariff" target="_blank">Daffa Arifadilah</a></p>
+  </footer>
+
+</body>
+</html>

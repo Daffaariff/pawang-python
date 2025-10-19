@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<main>
+  <h1>🐍 Welcome to <span style="color:#3b82f6;">PawangPython</span></h1>
+  <p>
+    Python is not just a programming language — it's a superpower! ⚡
+    From building AI models to creating games and automating daily tasks,
+    Python helps you turn your imagination into code. 💡
+  </p>
+
+  <section class="weather-card">
+    <h2>🌤 Today's Weather Inspiration</h2>
+    <p>Even the weather can't stop your coding journey! Here's how Jakarta looks today:</p>
+
+    {% if weather %}
+      <h3>{{ weather.city }}</h3>
+      <div class="weather-list">
+        {% for day in weather.forecast %}
+          <div class="weather-day">
+            <img src="{{ day.icon }}" alt="icon">
+            <p style="font-weight:600;">{{ day.date }}</p>
+            <p style="font-size:0.9rem;">{{ day.description }}</p>
+            <p>🌞 {{ day.temp_day }}°C / 🌙 {{ day.temp_night }}°C</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </section>
+
+  <div style="margin-top: 2rem;">
+    <a href="{{ url_for('auth.register') }}" class="cta-btn">🚀 Start Your Python Adventure</a>
+  </div>
+</main>
+{% endblock %}

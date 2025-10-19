@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="quiz-ready-container">
+    <div class="quiz-ready-header">
+        <h1>🎯 Python Quiz Challenge</h1>
+        <p class="quiz-ready-subtitle">Test your Python knowledge and climb the leaderboard! 🐍</p>
+    </div>
+
+    <div class="quiz-ready-card">
+        <div class="quiz-info">
+            <h2>Ready to Begin?</h2>
+            <p>This quiz will test your Python programming knowledge with multiple-choice questions.</p>
+
+            <div class="quiz-details">
+                <div class="detail-item">
+                    <span class="detail-icon">📝</span>
+                    <div class="detail-text">
+                        <strong>10 Questions</strong>
+                        <span>Multiple choice format</span>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-icon">⏱️</span>
+                    <div class="detail-text">
+                        <strong>No Time Limit</strong>
+                        <span>Take your time to think</span>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-icon">🏆</span>
+                    <div class="detail-text">
+                        <strong>Earn Points</strong>
+                        <span>Climb the leaderboard</span>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-icon">🔀</span>
+                    <div class="detail-text">
+                        <strong>Randomized</strong>
+                        <span>Questions shuffle each time</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-tips">
+                <h3>💡 Tips for Success:</h3>
+                <ul>
+                    <li>Read each question carefully</li>
+                    <li>Eliminate obviously wrong answers first</li>
+                    <li>Don't rush - there's no time limit</li>
+                    <li>Review your answers before submitting</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="quiz-actions">
+            <form method="POST" action="{{ url_for('quiz.start_quiz') }}">
+                <button type="submit" class="start-quiz-btn">
+                    🚀 Yes, Start the Quiz!
+                </button>
+            </form>
+
+            <a href="{{ url_for('home') }}" class="back-btn">
+                ← Not ready yet
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

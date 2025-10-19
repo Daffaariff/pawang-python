@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="quiz-container">
+    <div class="quiz-header">
+        <div class="quiz-progress">Question {{ progress }} of {{ total }}</div>
+        <h2>🐍 Python AI Quiz</h2>
+
+        <div class="quiz-progress-container">
+            <div class="quiz-progress-bar" style="width: {{ (progress / total * 100) }}%"></div>
+        </div>
+
+        <div class="quiz-stats">
+            <span>Keep coding! 💻</span>
+            <span>{{ progress }}/{{ total }} ({{ "%.0f"|format(progress / total * 100) }}%)</span>
+        </div>
+    </div>
+
+    <div class="question-content">
+        {% if '---CODE---' in q['question'] %}
+            {% set parts = q['question'].split('---CODE---') %}
+            <div class="question-instruction">
+                {{ parts[0] }}
+            </div>
+            <div class="code-container">
+                <div class="terminal-header">
+                    <span class="terminal-icon">💻</span>
+                    <span class="terminal-title">TERMINAL</span>
+                </div>
+                <pre class="code-question" id="question-code">{{ parts[1] }}</pre>
+            </div>
+        {% else %}
+            <div class="question-instruction">
+                {{ q["question"] }}
+            </div>
+        {% endif %}
+    </div>
+
+    <form method="post" class="quiz-form">
+        <div class="quiz-options">
+            {% for option in ['A', 'B', 'C', 'D'] %}
+            <div class="quiz-option">
+                <input type="radio" name="answer" value="{{ option }}" id="option{{ option }}" required>
+                <label for="option{{ option }}">
+                    <span class="option-letter">{{ option }}</span>
+                    <span class="option-text" id="option-{{ option }}">
+                        {{ q["option_" + option|lower] }}
+                    </span>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="quiz-btn">
+            {% if progress == total %}
+                Finish Quiz 🎉
+            {% else %}
+                Submit Answer →
+            {% endif %}
+        </button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, starting code formatting...');
+
+    const codeElement = document.getElementById('question-code');
+    if (codeElement) {
+        console.log('Code element found:', codeElement.textContent);
+        formatCodeQuestion(codeElement);
+    } else {
+        console.log('No code element found');
+    }
+
+    // Format options
+    document.querySelectorAll('.option-text').forEach(option => {
+        if (option.textContent.includes('______')) {
+            option.innerHTML = option.textContent.replace(/_{5,}/g, '<span class="blank">______</span>');
+            option.classList.add('code-option');
+        }
+    });
+});
+
+function formatCodeQuestion(element) {
+    console.log('Formatting code question...');
+    let text = element.textContent;
+    console.log('Original text:', text);
+
+    // Clean any HTML entities
+    text = text.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+
+    // Replace blanks
+    text = text.replace(/_{5,}/g, '<span class="blank">______</span>');
+
+    console.log('Formatted text:', text);
+    element.innerHTML = text;
+}
+</script>
+{% endblock %}
